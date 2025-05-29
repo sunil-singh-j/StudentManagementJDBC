@@ -13,15 +13,18 @@ import java.util.List;
 public class Studentdao {
 	
 	static int id=1;
+	static PreparedStatement pstmt=null;
+	static Connection con=null;
+	 static Statement stmt=null;
 	public static boolean insertStudentToDB(Student st) {
 		
 		boolean f=false;
 		
-		Connection con=ConnectionProvider.creatC();
+		 con=ConnectionProvider.creatC();
 		String query="insert into students (sid,sname,sphone,scity) values(?,?,?,?)";
 		
 		try {
-			PreparedStatement pstmt=con.prepareStatement(query);
+			 pstmt=con.prepareStatement(query);
 			pstmt.setInt(1,id);
 			pstmt.setString(2,st.getStudentName());
 			pstmt.setString(3, st.getStudentPhone());
@@ -33,6 +36,25 @@ public class Studentdao {
 			
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+					System.out.println("statement closed");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) {
+				try {
+					con.close();
+					System.out.println("connection closed");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		id=id+1;
 		return f;
@@ -45,11 +67,11 @@ public class Studentdao {
 		
 		boolean f=false;
 		
-		Connection con=ConnectionProvider.creatC();
+		 con=ConnectionProvider.creatC();
 		String query="delete from students where sid=?";
 		
 		try {
-			PreparedStatement pstmt=con.prepareStatement(query);
+		 pstmt=con.prepareStatement(query);
 			pstmt.setInt(1,id);
 			
 			pstmt.executeUpdate();
@@ -59,6 +81,26 @@ public class Studentdao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+					System.out.println("statement closed");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) {
+				try {
+					con.close();
+					System.out.println("connection closed");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		
 		return f;
 		
@@ -67,14 +109,14 @@ public class Studentdao {
 	public static List<Student> showAllStudent() {
 boolean f=false;
 		
-		Connection con=ConnectionProvider.creatC();
+		 con=ConnectionProvider.creatC();
 		String query="select * from students;";
 		List<Student> li=new ArrayList<Student>();
 		
 		
 		
 		try {
-			Statement stmt=con.createStatement();
+			 stmt=con.createStatement();
 			ResultSet set=stmt.executeQuery(query);
 			while(set.next()) {
 				int id=set.getInt(1);
@@ -89,6 +131,25 @@ boolean f=false;
 			
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			if(stmt!=null) {
+				try {
+					stmt.close();
+					System.out.println("statement closed");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) {
+				try {
+					con.close();
+					System.out.println("connection closed");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		
 		return li;
@@ -96,24 +157,43 @@ boolean f=false;
 	
 	public static boolean updateStudent(Student st,int id) {
 		boolean f=false;
-		Connection con=ConnectionProvider.creatC();
+		con=ConnectionProvider.creatC();
 		
 		String query="UPDATE students  SET sname = ?, sphone = ?, scity = ? WHERE sid = ?;";
 		try {
-			PreparedStatement ptmt=con.prepareStatement(query);
-			ptmt.setString(1, st.getStudentName());
-			ptmt.setString(2, st.getStudentPhone());
-			ptmt.setString(3, st.getStudentCity());
+		 pstmt=con.prepareStatement(query);
+			pstmt.setString(1, st.getStudentName());
+			pstmt.setString(2, st.getStudentPhone());
+			pstmt.setString(3, st.getStudentCity());
 			
-			ptmt.setInt(4
+			pstmt.setInt(4
 					, id);
 			
-			ptmt.executeUpdate();
+			pstmt.executeUpdate();
 			
 			f=true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+					System.out.println("statement closed");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) {
+				try {
+					con.close();
+					System.out.println("connection closed");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		return f;
 	}
